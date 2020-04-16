@@ -1,0 +1,242 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+$breakpoint-tablet: 768px;
+$aColor: #FFFFFF;
+$footerTextColor: white;
+
+.portfolio-img::-webkit-scrollbar {
+    height: 0.3125rem;
+}
+
+.portfolio-img::-webkit-scrollbar-thumb {
+    background-color: #2a2424;
+    border: solid 0.0625rem #e1ddd6;
+}
+
+.portfolio-img::-webkit-scrollbar-track {
+    background-color: #c8c2bd;
+    border: solid 0.125rem #e1ddd6;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#logo {
+    font-size: 20px;
+    font-style: none;
+    color: white;
+    margin: auto 10px auto 25px;
+    text-decoration: none;
+}
+
+.title{
+    padding-bottom: 15px;
+
+}
+
+.navigation{
+    min-height: 35rem;
+    background-color: #272727;
+    font-family: 'Oswald', 'Nanum Gothic', sans-serif;
+}
+
+.nav-anchor, .nav-anchor:hover, .nav-anchor:link, .nav-anchor:visited {
+    color: $aColor;
+    text-decoration: none;
+}
+
+.nav-div{
+    position: relative;
+    height: 3.5rem;
+    display: flex;
+}
+
+@media (max-width: $breakpoint-tablet) {
+    .nav-div{
+        justify-content: space-between;
+    }
+}
+
+.nav-div ul {
+    display: flex;
+    margin: auto 0 auto 0;
+}
+
+@media (max-width: $breakpoint-tablet) {
+    .nav-div ul{
+        display: none;
+    }
+}
+
+.nav-li{
+    margin: 0 5px 0 5px;
+}
+
+.nav-btn{
+    display: none;
+    margin-right:25px;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .nav-btn{
+    display: block;
+    background-color: transparent;
+    color:white;
+    border:0;
+  }
+}
+
+.side-nav{
+    display:flex;
+    visibility: hidden;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    min-width: 15rem;
+    max-width: 20rem;
+    right: 0px;
+    opacity: 0;
+    background-color: black;
+    z-index: 5;
+    transform: translateX(100%);
+    transition: transform 300ms, opacity 300ms linear;
+    .side-nav-header{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        border-bottom: solid 2px #444444;
+        height: 3.5rem;
+        margin-bottom: 5px;
+    }
+    button{
+        margin: auto 15px auto;
+        background-color: transparent;
+        border: none;
+        color: white;
+    }
+    li{
+        margin-top: 1px;
+        padding: 15px;
+        background-color: #272727;
+    }
+}
+
+.side-nav-active{
+    transform: translateX(0%);
+    visibility: visible;
+    opacity: 1;
+}
+
+.about{
+    padding: 0px 125px;
+    margin-top: 49px;
+    margin-bottom: 49px;
+}
+
+.container{
+    display: flex;
+    flex-direction :column;
+    font-family: "Oswald";
+    min-height: 20rem;
+}
+
+@media only screen and (max-width: 1080px){
+    .container {
+        padding: 0px 75px;
+    }
+}
+
+@media only screen and (max-width: 768px){
+    .container {
+        padding: 0px 50px;
+    }
+}
+
+
+
+.portfolio{
+    padding-left: 16%;
+    padding-bottom: 150px;
+    
+    .portfolio-img{
+        display: flex;
+        overflow-x: scroll;
+        padding-bottom: 50px;
+        div{
+            padding: 0 10px;
+        }
+    }
+    img{
+        height: 250px;
+        width: 400px;
+    }
+}
+
+
+@media only screen and (max-width: 768px){
+    .portfolio {
+        padding: 0px;
+    }
+}
+
+
+.footer{
+    display:flex;
+    justify-content: center;
+    height: 20rem;
+    background-color: rgb(32, 32, 32);
+    color: $footerTextColor;
+}
+
+.footer-div{
+    width: 33%;
+    margin-top: 25px;
+    hr{
+        background-color: $footerTextColor;
+    }
+    a, a:hover, a:visited, a:link{
+        color: $footerTextColor;
+        text-decoration: none;
+    }
+}

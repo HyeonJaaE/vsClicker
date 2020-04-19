@@ -1,56 +1,83 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import firebase from "../firebase";
 import Nav from "./Nav";
+import Vs from "./Vs";
 
 const Home = () => {
+    const about = useRef();
+    const [contents, setContents] = useState([]);
+    const [idx, setIdx] = useState(0);
+
+    const db = firebase.firestore();
+    const contentsDoc = db.collection("contents").orderBy("view", "desc").limit(10);
+
+    useEffect(() => {
+        contentsDoc
+            .get()
+            .then((snapShot) => {
+                snapShot.forEach((doc) => {
+                    //console.log(doc.data());
+                    var tmp = (
+                        <div key={doc.id} className="slide">
+                            <Vs key={doc.id} homeMode={true} docref={doc.id} />
+                        </div>
+                    );
+                    setContents((contents) => contents.concat(tmp));
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        /*
+        if (window.scrollY > about.current.offsetTop) {
+            console.log(1);
+        }
+        */
+    }, []);
+
+    const handleIdx = (e) => {
+        //console.log(e.target.value);
+        switch (e) {
+            case "left":
+                if (idx === 0) {
+                    setIdx(contents.length - 1);
+                } else {
+                    setIdx(idx - 1);
+                }
+                break;
+
+            case "right":
+                if (idx === contents.length - 1) {
+                    setIdx(0);
+                } else {
+                    setIdx(idx + 1);
+                }
+
+                break;
+        }
+    };
+
     return (
         <div>
             <Nav />
-            <div className="container about">
-                <div className="title">
+            <div className="slide-container">
+                <a href="#" class="arrow left" onClick={() => handleIdx("left")}></a>
+                {contents[idx]}
+                <a href="#" class="arrow right" onClick={() => handleIdx("right")}></a>
+            </div>
+            <div ref={about} className="about col-12">
+                <div className="col-12 col-lg-6 p-0">
                     <h3>ABOUT ME</h3>
+                    {window.scrollY}
                 </div>
 
-                <p className="">Front-End 개발자 이현재입니다.</p>
-                <a href="/resume">RESUME</a>
-            </div>
-
-            <div className="container">
-                <div className="portfolio">
-                    <div className="title" style={{ textAlign: "right" }}>
-                        <h3>PORTFOLIO</h3>
-                    </div>
-                    <div className="portfolio-img">
-                        <div>
-                            <img src="./cat3.jpg"></img>
-                            <p>설명</p>
-                        </div>
-                        <div>
-                            <img src="./cat3.jpg"></img>
-                        </div>
-                        <div>
-                            <img src="./cat3.jpg"></img>
-                        </div>
-                    </div>
+                <div className="about-img col-12 col-lg-6 p-0">
+                    <img src="./logo512.png"></img>
                 </div>
             </div>
-
-            <div className="jumbotron d-flex" id="p1" style={{ height: "20rem" }}>
-                <div className="col-3 pt-4">
-                    <p>포트폴리오 1</p>
-                </div>
-                <div className="col-3 pt-4">
-                    <p>Link</p>
-                    <hr className="bg-secondary" />
-                </div>
-            </div>
-            <div className="jumbotron d-flex" id="p2" style={{ height: "20rem" }}>
-                <div className="col-3 pt-4">
-                    <p>포트폴리오 1</p>
-                </div>
-                <div className="col-3 pt-4">
-                    <p>Link</p>
-                    <hr className="bg-secondary" />
-                </div>
+            <div style={{ height: "1500px" }}></div>
+            <div className="align-self-end mt-auto col-12 mt-auto py-4 bg-dark text-center text-white-50">
+                presentlee914@gmail.com
             </div>
         </div>
     );

@@ -8,20 +8,19 @@ import Nav from "./Nav";
 //import { GET_ERRORS } from '../actions/types';
 
 const Setting = (props) => {
-    const [data, setData] = useState({
+    const auth = useSelector((state) => state.auth);
+
+    const [info, setInfo] = useState({
         title: "",
         subtitle1: "",
         subtitle2: "",
         file1: null,
         file2: null,
         option: "txt",
-        url1: null,
-        url2: null,
-        data: null,
-        errors: {},
     });
-
-    const auth = useSelector((state) => state.auth);
+    const [url1, setUrl1] = useState(null);
+    const [url2, setUrl2] = useState(null);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
         if (!auth.isAuthenticated) {
@@ -32,22 +31,24 @@ const Setting = (props) => {
 
     useEffect(() => {
         //파일 업로드 => url1, url2 != null
-        if (data.url1 !== null && data.url2 !== null) {
-            var _data = data.data;
-            _data.url = [data.url1, data.url2];
-            this.docSet(_data);
+
+        if (url1 !== null && url2 !== null && data !== null) {
+            var _data = data;
+            _data.url = [url1, url2];
+            docSet(_data);
         }
         /*
+
         if (this.state.file1) {
             if (this.state.file1.size > 1024 * 1024 * 2) window.alert("용량 초과");
         }*/
-    });
+    }, [data, url1, url2]);
 
     const updateField = (e) => {
         if (e.target.files) {
-            setData({ ...data, [e.target.id]: e.target.files[0] });
+            setInfo({ ...info, [e.target.id]: e.target.files[0] });
         } else {
-            setData({ ...data, [e.target.id]: e.target.value });
+            setInfo({ ...info, [e.target.id]: e.target.value });
         }
     };
 
@@ -61,38 +62,38 @@ const Setting = (props) => {
                 id: auth.user.email,
                 name: auth.user.displayName,
             },
-            subtitle: [data.subtitle1, data.subtitle2],
-            title: data.title,
-            type: data.option,
+            subtitle: [info.subtitle1, info.subtitle2],
+            title: info.title,
+            type: info.option,
             view: 0,
-            voteA: [],
-            voteB: [],
+            voteA: 0,
+            voteB: 0,
             date: firebase.firestore.FieldValue.serverTimestamp(),
         };
 
-        if (data.option === "img") {
-            if (data.file1.size > 1024 * 1024 * 2) {
+        if (info.option === "img") {
+            if (info.file1.size > 1024 * 1024 * 2) {
                 window.alert("1번 파일의 용량이 2MB를 초과합니다.");
                 return;
             }
-            if (data.file2.size > 1024 * 1024 * 2) {
+            if (info.file2.size > 1024 * 1024 * 2) {
                 window.alert("2번 파일의 용량이 2MB를 초과합니다.");
                 return;
             }
 
-            if (!checkFile(data.file1.type)) {
+            if (!checkFile(info.file1.type)) {
                 window.alert("파일 확장자명을 확인해주세요.");
                 return;
             }
 
-            if (!checkFile(data.file2.type)) {
+            if (!checkFile(info.file2.type)) {
                 window.alert("파일 확장자명을 확인해주세요.");
                 return;
             }
 
             setData(_data);
-            fileUpload(data.file1, 1);
-            fileUpload(data.file2, 2);
+            fileUpload(info.file1, 1);
+            fileUpload(info.file2, 2);
         } else {
             docSet(_data);
         }
@@ -164,10 +165,10 @@ const Setting = (props) => {
                     //console.log("File available at", downloadURL);
                     switch (o) {
                         case 1:
-                            setData({ ...data, url1: downloadURL });
+                            setUrl1(downloadURL);
                             break;
                         case 2:
-                            setData({ ...data, url2: downloadURL });
+                            setUrl2(downloadURL);
                             break;
                     }
                 });
@@ -222,7 +223,7 @@ const Setting = (props) => {
                                     style={{ resize: "none" }}
                                 />
 
-                                {data.option === "img" ? (
+                                {info.option === "img" ? (
                                     <input
                                         type="file"
                                         className="form-control-file"
@@ -255,7 +256,7 @@ const Setting = (props) => {
                                     style={{ resize: "none" }}
                                 />
 
-                                {data.option === "img" ? (
+                                {info.option === "img" ? (
                                     <input
                                         type="file"
                                         className="form-control-file"
@@ -280,7 +281,7 @@ const Setting = (props) => {
                         </div>
 
                         <div className="d-flex justify-content-end">
-                            {data.data ? (
+                            {data ? (
                                 <div className="spinner-border text-secondary" role="status">
                                     <span className="sr-only">Loading...</span>
                                 </div>

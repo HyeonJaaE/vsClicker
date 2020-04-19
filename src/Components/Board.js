@@ -9,8 +9,8 @@ import firebase from "../firebase";
 const Board = () => {
     const auth = useSelector((state) => state.auth);
 
+    const [card, setCard] = useState([]);
     const [data, setData] = useState({
-        card: [],
         idx: null,
         type: "all",
         order: "view",
@@ -19,50 +19,15 @@ const Board = () => {
         search: false,
     });
 
-    const handleType = (e) => {
-        setData({ ...data, type: e, idx: null, card: [] }, () => {
-            var ref = getRef(data.type, data.order);
-            getContents(ref.limit(data.limit));
-        });
-    };
-
-    const handleOrder = (e) => {
-        setData(
-            {
-                ...data,
-                order: e,
-                idx: null,
-                card: [],
-            },
-            () => {
-                var ref = getRef(data.type, data.order);
-                getContents(ref.limit(data.limit));
-            }
-        );
-    };
-
-    const handleGetMyContents = (e) => {
-        if (auth.isAuthenticated) {
-            setData(
-                {
-                    ...data,
-                    getMy: e,
-                    idx: null,
-                    card: [],
-                },
-                () => {
-                    var ref = getRef(data.type, data.order);
-                    getContents(ref.limit(data.limit));
-                }
-            );
-        } else {
-            window.alert("로그인 후 사용 가능");
-        }
-    };
+    useEffect(() => {
+        var ref = getRef(data.type, data.order);
+        getContents(ref.limit(data.limit));
+    }, [data.order, data.getMy, data.type]);
 
     const getRef = (t, o) => {
         var db = firebase.firestore();
         var tmp;
+
         switch (t) {
             case "all":
                 tmp = db.collection("contents");
@@ -90,6 +55,7 @@ const Board = () => {
 
     const getContents = (e) => {
         var ref = e;
+
         if (data.getMy) {
             ref = e.where("author.id", "==", auth.user.email);
         }
@@ -108,11 +74,11 @@ const Board = () => {
                             view={doc.data().view}
                         />
                     );
-                    setData({
-                        ...data,
-                        card: data.card.concat(tmp),
-                        idx: snapShot.docs[snapShot.docs.length - 1],
-                    });
+                    setCard((card) => card.concat(tmp));
+                });
+                setData({
+                    ...data,
+                    idx: snapShot.docs[snapShot.docs.length - 1],
                 });
             })
             .catch((err) => {
@@ -120,17 +86,30 @@ const Board = () => {
             });
     };
 
+    const handleType = (e) => {
+        setCard([]);
+        setData({ ...data, type: e, idx: null });
+    };
+
+    const handleOrder = (e) => {
+        setCard([]);
+        setData({ ...data, order: e, idx: null });
+    };
+
+    const handleGetMyContents = (e) => {
+        if (auth.isAuthenticated) {
+            setCard([]);
+            setData({ ...data, getMy: e, idx: null });
+        } else {
+            window.alert("로그인 후 사용 가능");
+        }
+    };
+
     const more = () => {
         var order = data.order;
         var ref = getRef(data.type, data.order);
         getContents(ref.startAfter(data.idx.data()[order]).limit(data.limit));
     };
-
-    useEffect(() => {
-        var ref = getRef(data.type, data.order);
-        //getContents(ref.where("author.id", "==", "n4@naver.com").limit(data.limit));
-        getContents(ref.limit(data.limit));
-    }, []);
 
     return (
         <div className="d-flex flex-column h-100" style={{ backgroundColor: "rgb(242, 244, 247)" }}>
@@ -143,7 +122,7 @@ const Board = () => {
                         getMyContents={handleGetMyContents}
                         handleOrder={handleOrder}
                     />
-                    <div>{data.card}</div>
+                    <div>{card}</div>
                     {data.idx && (
                         <div className="row pb-3 justify-content-center">
                             <button

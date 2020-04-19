@@ -37,6 +37,9 @@
   }
 }
 
+body{
+    overflow-x: hidden;
+}
 
 $breakpoint-tablet: 768px;
 $aColor: #FFFFFF;
@@ -76,7 +79,6 @@ ul {
 }
 
 .navigation{
-    min-height: 35rem;
     background-color: #272727;
     font-family: 'Oswald', 'Nanum Gothic', sans-serif;
 }
@@ -169,9 +171,102 @@ ul {
 }
 
 .about{
+    display: flex;
+    flex-wrap: wrap;
+    height: 40rem;
     padding: 0px 125px;
     margin-top: 49px;
     margin-bottom: 49px;
+}
+
+.about-img{
+    display: block;
+    opacity: 0;
+    transform: translateX(25%);
+    animation: about-img 5s infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes about-img {
+    0% {
+        transform: translateX(25%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+.comment-container{
+    min-height: 12rem;
+}
+.slide-container{
+    min-height: 45rem;
+    display:flex;
+}
+
+.slide-btn{
+    margin: auto 5px;
+    position: absolute;
+    z-index: 10;
+    border: 0px;  
+    background-color: transparent;
+}
+
+.slide{
+    width: 100%;
+    animation: sliding 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes sliding {
+    0% {
+        transform: translateX(-5%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+
+.arrow {
+    position: absolute;
+    top: 240px;
+    z-index: 5;
+	width: 3vmin;
+	height: 3vmin;
+	background: transparent;
+	border-top: 1vmin solid rgb(22, 22, 22);
+	border-right: 1vmin solid rgb(20, 20, 20);
+	box-shadow: 0 0 0 lightgray;
+	transition: all 200ms ease;
+	
+	&.left {
+		left: 5%;
+		transform: translate3d(0,-50%,0) rotate(-135deg);
+	}
+
+	&.right {
+		right: 5%;
+		transform: translate3d(0,-50%,0) rotate(45deg);
+	}
+	
+	&:hover {
+		border-color: rgb(175, 175, 175);
+		box-shadow: 0.5vmin -0.5vmin 0 rgb(46, 46, 46);
+	}
+	
+	&:before { // for better hit area
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-40%,-60%) rotate(45deg);
+		width: 200%;
+		height: 200%;
+	}
 }
 
 .container{

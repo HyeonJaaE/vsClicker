@@ -5,57 +5,40 @@ import { useSelector } from "react-redux";
 import { fn_dateTimeToFormatted } from "./Function";
 
 const Comment = (props) => {
-    const [data, setData] = useState({
-        replyToAdd: "",
-        willReply: false,
-        reply: null,
-    });
-
     const auth = useSelector((state) => state.auth);
 
-    const replyListener = () => {
-        const db = firebase.firestore();
-        let doc = db
-            .collection("contents")
-            .doc(props.n)
-            .collection("comments")
-            .doc(props.docId)
-            .collection("reply");
+    const [replyToAdd, setReplyToAdd] = useState("");
+    const [willReply, setWillReply] = useState(false);
+    const [reply, setReply] = useState(null);
 
-        doc.onSnapshot(
-            (docSnapshot) => {
-                //console.log(docSnapshot);
-                getReply();
-            },
-            (err) => {
-                //console.log(`Encountered error: ${err}`);
-            }
-        );
-    };
+    //firestore init
+    const db = firebase.firestore();
+    const contentsDoc = db.collection("contents").doc(props.n);
+    const commentsCol = contentsDoc.collection("comments");
+    const replyCol = commentsCol.doc(props.commentDocId).collection("reply");
 
-    const handleChange = (e) => {
-        setData({ ...data, [e.target.id]: e.target.value });
-    };
-
-    const toggle = () => {
-        if (auth.isAuthenticated) {
-            if (!data.willReply) {
-                setData({ ...data, willReply: true });
-            } else {
-                setData({ ...data, willReply: false });
-            }
-        } else {
-            window.alert("로그인 후 이용할 수 있습니다.");
+    useEffect(() => {
+        if (!props.data.replyTo) {
+            getReply();
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        if (!props.data.replyTo) {
+            const replyListener = replyCol.onSnapshot(
+                (docSnapshot) => {
+                    getReply();
+                },
+                (err) => {
+                    //console.log(`Encountered error: ${err}`);
+                }
+            );
+            return () => replyListener();
+        }
+    }, []);
 
     const getReply = () => {
-        const db = firebase.firestore();
-        db.collection("contents")
-            .doc(props.n)
-            .collection("comments")
-            .doc(props.docId)
-            .collection("reply")
+        replyCol
             .orderBy("cDate", "asc")
             .get()
             .then((querySnaphot) => {
@@ -63,33 +46,34 @@ const Comment = (props) => {
                 querySnaphot.forEach((doc) => {
                     //console.log(doc.id);
                     // this.props.docid는 comment id , doc.id 는 reply id
-                    tmp.push([doc.data(), props.docId, doc.id]);
+                    tmp.push([doc.data(), props.commentDocId, doc.id]);
                 });
                 //console.log("tmp", tmp);
-                setData({ ...data, reply: tmp });
+                setReply(tmp);
             });
     };
 
-    useEffect(() => {
-        //답글을 갖고 있을 떄 가져와서 날짜순으로 출력
-        if (!props.data.replyTo) {
-            getReply();
-            replyListener();
+    const toggle = () => {
+        if (auth.isAuthenticated) {
+            if (!willReply) {
+                setWillReply(true);
+            } else {
+                setWillReply(false);
+            }
         } else {
+            window.alert("로그인 후 이용할 수 있습니다.");
         }
-    }, []);
+    };
 
     const up = () => {
-        var db = firebase.firestore();
-        //this.props.n 글 id
-        var ref = db.collection("contents").doc(props.n);
+        var ref = commentsCol;
 
         //comment 일때는 docId = comment id , docId2 = undefined
         //reply 일때는 docId = comment id , docId2 = reply id
         if (props.data.replyTo) {
-            ref = ref.collection("comments").doc(props.docId).collection("reply").doc(props.docId2);
+            ref = replyCol.doc(props.replyDocId);
         } else {
-            ref = ref.collection("comments").doc(props.docId);
+            ref = commentsCol.doc(props.commentDocId);
         }
 
         if (auth.isAuthenticated) {
@@ -113,13 +97,12 @@ const Comment = (props) => {
     };
 
     const report = () => {
-        var db = firebase.firestore();
-        var ref = db.collection("contents").doc(props.n);
+        var ref = contentsDoc;
 
         if (props.data.replyTo) {
-            ref = ref.collection("comments").doc(props.docId).collection("reply").doc(props.docId2);
+            ref = replyCol.doc(props.replyDocId);
         } else {
-            ref = ref.collection("comments").doc(props.docId);
+            ref = commentsCol.doc(props.commentDocId);
         }
 
         if (auth.isAuthenticated) {
@@ -144,17 +127,12 @@ const Comment = (props) => {
 
     const del = () => {
         if (window.confirm("댓글을 삭제하시겠습니까?")) {
-            var db = firebase.firestore();
-            var ref = db.collection("contents").doc(props.n);
+            var ref = contentsDoc;
 
             if (props.data.replyTo) {
-                ref = ref
-                    .collection("comments")
-                    .doc(props.docId)
-                    .collection("reply")
-                    .doc(props.docId2);
+                ref = replyCol.doc(props.replyDocId);
             } else {
-                ref = ref.collection("comments").doc(props.docId);
+                ref = commentsCol.doc(props.commentDocId);
             }
 
             ref.delete().then(() => {
@@ -167,12 +145,7 @@ const Comment = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        var db = firebase.firestore();
-        db.collection("contents")
-            .doc(props.n)
-            .collection("comments")
-            .doc(props.docId)
-            .collection("reply")
+        replyCol
             .doc()
             .set({
                 cAuthor: {
@@ -180,7 +153,7 @@ const Comment = (props) => {
                     cid: auth.user.email,
                 },
                 replyTo: props.data.cAuthor.cName,
-                cBody: data.replyToAdd,
+                cBody: replyToAdd,
                 cReport: [],
                 cUp: [],
                 cDate: firebase.firestore.FieldValue.serverTimestamp(),
@@ -258,13 +231,13 @@ const Comment = (props) => {
                 </div>
             </div>
 
-            {data.reply && (
+            {reply && (
                 <div>
-                    <CommentDiv n={props.n} data={data.reply} />
+                    <CommentDiv n={props.n} d={reply} />
                 </div>
             )}
 
-            {data.willReply && (
+            {willReply && (
                 <div className="col-12 my-3">
                     <form onSubmit={onSubmit}>
                         <div className="d-flex">
@@ -274,7 +247,7 @@ const Comment = (props) => {
                                     type="text"
                                     id="replyToAdd"
                                     placeholder="답글 달기"
-                                    onChange={handleChange}
+                                    onChange={(e) => setReplyToAdd(e.target.value)}
                                 />
                             </div>
                             <div>

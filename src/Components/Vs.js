@@ -21,6 +21,7 @@ const Vs = (props) => {
 
     //firestore init
     const db = firebase.firestore();
+    const infoDoc = db.collection("info").doc("infoDoc");
     const contentsDoc = db.collection("contents").doc(parameter);
     const commentsCol = contentsDoc.collection("comments");
 
@@ -122,7 +123,11 @@ const Vs = (props) => {
     };
 
     const vote = (e) => {
-        if (!voted || true) {
+        if (!voted) {
+            infoDoc.update({
+                totalVote: firebase.firestore.FieldValue.increment(1),
+            });
+
             contentsDoc
                 .update({
                     [e]: firebase.firestore.FieldValue.increment(1),
@@ -200,7 +205,7 @@ const Vs = (props) => {
                                                           (contents.voteA /
                                                               (contents.voteA + contents.voteB)) *
                                                           100
-                                                      ).toFixed(1)
+                                                      ).toFixed(0)
                                                     : 0}
                                                 %
                                             </h1>
@@ -251,7 +256,7 @@ const Vs = (props) => {
                                                           (contents.voteB /
                                                               (contents.voteA + contents.voteB)) *
                                                           100
-                                                      ).toFixed(1)
+                                                      ).toFixed(0)
                                                     : 0}
                                                 %
                                             </h1>
@@ -282,7 +287,7 @@ const Vs = (props) => {
                                                       (contents.voteA /
                                                           (contents.voteA + contents.voteB)) *
                                                       100
-                                                  ).toFixed(1)
+                                                  ).toFixed(0)
                                                 : 0}
                                             %
                                         </h1>
@@ -322,7 +327,7 @@ const Vs = (props) => {
                                                       (contents.voteB /
                                                           (contents.voteA + contents.voteB)) *
                                                       100
-                                                  ).toFixed(1)
+                                                  ).toFixed(0)
                                                 : 0}
                                             %
                                         </h1>

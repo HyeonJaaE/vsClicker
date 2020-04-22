@@ -28,7 +28,12 @@ const Signup = (props) => {
     const submit = (e) => {
         //prevent default action of form tag
         e.preventDefault();
-
+        var db = firebase.firestore();
+        db.collection("info")
+            .doc("infoDoc")
+            .update({
+                totalUser: firebase.firestore.FieldValue.increment(1),
+            });
         firebase
             .auth()
             .createUserWithEmailAndPassword(data.email, data.password)

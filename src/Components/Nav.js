@@ -83,30 +83,30 @@ const Nav = () => {
                 <ul>
                     <li>
                         <Link className="nav-anchor" to="/board">
-                            BOARD
+                            모든 글
                         </Link>
                     </li>
                     <li>
                         <Link className="nav-anchor" to="/profile">
-                            PROFILE
+                            내 정보
                         </Link>
                     </li>
 
                     <li>
                         <Link className="nav-anchor" to="/setting">
-                            SETTING
+                            글 작성
                         </Link>
                     </li>
                     {auth.isAuthenticated ? (
-                        <li className="nav-li">
+                        <li>
                             <a className="nav-anchor" onClick={logout} href="/">
-                                LOGOUT
+                                로그아웃
                             </a>
                         </li>
                     ) : (
-                        <li className="nav-li">
+                        <li>
                             <a className="nav-anchor" href="/login">
-                                LOGIN
+                                로그인
                             </a>
                         </li>
                     )}
@@ -122,32 +122,31 @@ const Nav = () => {
                 </button>
 
                 <ul className="nav-ul">
-                    <li className="nav-li">
+                    <li className="nav-li px-2">
                         <Link className="nav-anchor" to="/board">
-                            BOARD
+                            모든 글
                         </Link>
                     </li>
-                    <li className="nav-li">
-                        <Link className="nav-anchor" to="/profile">
-                            PROFILE
-                        </Link>
-                    </li>
-
-                    <li className="nav-li">
+                    <li className="nav-li px-2">
                         <Link className="nav-anchor" to="/setting">
-                            SETTING
+                            글 작성
+                        </Link>
+                    </li>
+                    <li className="nav-li px-2">
+                        <Link className="nav-anchor" to="/profile">
+                            내 정보
                         </Link>
                     </li>
                     {auth.isAuthenticated ? (
-                        <li className="nav-li">
+                        <li className="nav-li px-2">
                             <a className="nav-anchor" onClick={logout} href="/">
-                                LOGOUT
+                                로그아웃
                             </a>
                         </li>
                     ) : (
-                        <li className="nav-li">
+                        <li className="nav-li px-2">
                             <a className="nav-anchor" href="/login">
-                                LOGIN
+                                로그인
                             </a>
                         </li>
                     )}

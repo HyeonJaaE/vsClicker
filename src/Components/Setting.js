@@ -102,6 +102,7 @@ const Setting = (props) => {
     const docSet = (e) => {
         //console.log("e", e);
         var db = firebase.firestore();
+
         db.collection("contents")
             .doc()
             .set(e)

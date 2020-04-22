@@ -15,7 +15,7 @@ const Board = () => {
         type: "all",
         order: "view",
         getMy: false,
-        limit: 10,
+        limit: 5,
         search: false,
     });
 

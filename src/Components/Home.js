@@ -76,28 +76,8 @@ const Home = () => {
                 <a href="#" class="arrow right" onClick={() => handleIdx("right")}></a>
             </div>
 
-            <div ref={about} className="about col-12">
-                <div
-                    className="d-flex col-12 col-lg-6 p-0 align-items-center justify-content-center"
-                    style={{ minHeight: "300px" }}
-                >
-                    <p className="col-12 col-8-lg text-center">
-                        <h3>당신의 밸런스 게임에 투표하세요</h3>
-                        <hr />
-                        찍먹vs부먹 , 양념치킨vs후라이드치킨 등 다양한 밸런스 게임
-                        <br />
-                        <br />
-                        <a href="/board">모든 게시물 확인</a>
-                    </p>
-                </div>
-
-                <div className="about-img right col-12 col-lg-6 p-0">
-                    <img style={{ width: "85%", height: "85%" }} src="./vsclickerimg1_1.png"></img>
-                </div>
-            </div>
-
             <div
-                className="d-flex col-12 bg-dark justify-content-center text-white"
+                className="d-flex mt-4 col-12 bg-dark justify-content-center text-white"
                 style={{ height: "250px" }}
             >
                 <div className="mx-4 my-auto">
@@ -123,21 +103,6 @@ const Home = () => {
                 </div>
             </div>
 
-            <div ref={about} className="about col-12">
-                <div className="about-img left col-12 col-lg-6 p-0">
-                    <img style={{ width: "100%", height: "100%" }} src="./vsclicker2.png"></img>
-                </div>
-                <div
-                    className="d-flex col-12 col-lg-6 p-0 align-items-center justify-content-center"
-                    style={{ minHeight: "300px" }}
-                >
-                    <p className="col-12 col-8-lg text-center">
-                        <h3>직접 제작하는 나만의 밸런스게임</h3>
-                        <hr />
-                        <a href="/setting">밸런스게임 작성하러 가기</a>
-                    </p>
-                </div>
-            </div>
             <div
                 className="align-self-end mt-auto col-12 mt-auto py-4 bg-dark text-center text-white"
                 style={{ borderTop: "1px solid gray" }}

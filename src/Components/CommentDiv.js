@@ -4,6 +4,7 @@ import Comment from "./Comment";
 const CommentDiv = (props) => {
     const tmp = props.d;
     console.log(props.d);
+
     const list = tmp.map((t, i) => (
         <Comment key={i} data={t[0]} commentDocId={t[1]} replyDocId={t[2]} n={props.n}></Comment>
     ));

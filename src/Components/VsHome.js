@@ -361,7 +361,7 @@ const VsHome = (props) => {
                                 borderBottomWidth: "1px",
                             }}
                         >
-                            <p className="mb-0" style={{ minHeight: "25px" }}>
+                            <p className="mb-2" style={{ minHeight: "25px" }}>
                                 {contents.title}
                             </p>
                             <footer className="blockquote-footer">
@@ -370,6 +370,8 @@ const VsHome = (props) => {
                                 <cite title="Source Title">
                                     {fn_dateTimeToFormatted(contents.date.toDate())}
                                 </cite>
+                                &nbsp; ({contents.voteA + contents.voteB}&nbsp;
+                                <cite title="Source Title">voted</cite>)
                             </footer>
                         </blockquote>
 
@@ -431,51 +433,49 @@ const VsHome = (props) => {
                 )}
 
                 {contents && (
-                    <div className="col-12 my-3">
-                        <form onSubmit={onSubmit}>
-                            {auth.isAuthenticated ? (
-                                <div className="d-flex">
-                                    <div className="w-100">
-                                        <input
-                                            ref={cta}
-                                            className="w-100 form-control my-input"
-                                            type="text"
-                                            id="commentToAdd"
-                                            placeholder="댓글 달기"
-                                            onChange={(e) => setCommentToAdd(e.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <input
-                                            className="form-control my-input"
-                                            type="submit"
-                                            value="댓글 등록"
-                                        />
-                                    </div>
+                    <form className="p-3" onSubmit={onSubmit}>
+                        {auth.isAuthenticated ? (
+                            <div className="d-flex">
+                                <div className="w-100">
+                                    <input
+                                        ref={cta}
+                                        className="w-100 form-control my-input"
+                                        type="text"
+                                        id="commentToAdd"
+                                        placeholder="댓글 달기"
+                                        onChange={(e) => setCommentToAdd(e.target.value)}
+                                    />
                                 </div>
-                            ) : (
-                                <div className="d-flex">
-                                    <div className="w-100">
-                                        <input
-                                            className="w-100 form-control my-input"
-                                            type="button"
-                                            id="commentToAdd"
-                                            value="로그인 후 댓글 작성 가능"
-                                            style={{ cursor: "pointer", width: "500px" }}
-                                        />
-                                    </div>
-                                    <div>
-                                        <input
-                                            className="form-control my-input"
-                                            type="submit"
-                                            value="댓글 등록"
-                                            disabled
-                                        />
-                                    </div>
+                                <div>
+                                    <input
+                                        className="form-control my-input"
+                                        type="submit"
+                                        value="댓글 등록"
+                                    />
                                 </div>
-                            )}
-                        </form>
-                    </div>
+                            </div>
+                        ) : (
+                            <div className="d-flex">
+                                <div className="w-100">
+                                    <input
+                                        className="w-100 form-control my-input"
+                                        type="button"
+                                        id="commentToAdd"
+                                        value="로그인 후 댓글 작성 가능"
+                                        style={{ cursor: "pointer", width: "500px" }}
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        className="form-control my-input"
+                                        type="submit"
+                                        value="댓글 등록"
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </form>
                 )}
             </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import firebase from "../firebase";
 import Nav from "./Nav";
-import Vs from "./Vs";
+import VsHome from "./VsHome";
 
 const Home = () => {
     const about = useRef();
@@ -23,7 +23,7 @@ const Home = () => {
                     //console.log(doc.data());
                     var tmp = (
                         <div key={doc.id} className="slide">
-                            <Vs key={doc.id} homeMode={true} docref={doc.id} />
+                            <VsHome key={doc.id} homeMode={true} docref={doc.id} />
                         </div>
                     );
                     setContents((contents) => contents.concat(tmp));
@@ -96,22 +96,6 @@ const Home = () => {
                 </div>
             </div>
 
-            <div ref={about} className="about col-12">
-                <div className="about-img left col-12 col-lg-6 p-0">
-                    <img style={{ width: "100%", height: "100%" }} src="./vsclicker2.png"></img>
-                </div>
-                <div
-                    className="d-flex col-12 col-lg-6 p-0 align-items-center justify-content-center"
-                    style={{ minHeight: "300px" }}
-                >
-                    <p className="col-12 col-8-lg text-center">
-                        <h3>직접 제작하는 나만의 투표</h3>
-                        <hr />
-                        <a href="/setting">투표 작성하러 가기</a>
-                    </p>
-                </div>
-            </div>
-
             <div
                 className="d-flex col-12 bg-dark justify-content-center text-white"
                 style={{ height: "250px" }}
@@ -135,6 +119,22 @@ const Home = () => {
                         <h6>이용자</h6>
                         <br />
                         <h2>{totalUser}</h2>
+                    </p>
+                </div>
+            </div>
+
+            <div ref={about} className="about col-12">
+                <div className="about-img left col-12 col-lg-6 p-0">
+                    <img style={{ width: "100%", height: "100%" }} src="./vsclicker2.png"></img>
+                </div>
+                <div
+                    className="d-flex col-12 col-lg-6 p-0 align-items-center justify-content-center"
+                    style={{ minHeight: "300px" }}
+                >
+                    <p className="col-12 col-8-lg text-center">
+                        <h3>직접 제작하는 나만의 밸런스게임</h3>
+                        <hr />
+                        <a href="/setting">밸런스게임 작성하러 가기</a>
                     </p>
                 </div>
             </div>

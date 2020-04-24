@@ -42,7 +42,7 @@ const listIcon = (
     </svg>
 );
 
-const logo = "</>";
+const logo = "vs.Clicker";
 
 const Nav = () => {
     const [side, setSide] = useState(false);
@@ -83,26 +83,28 @@ const Nav = () => {
                 <ul>
                     <li>
                         <Link className="nav-anchor" to="/board">
-                            모든 글
+                            밸런스게임
                         </Link>
                     </li>
                     <li>
-                        <Link className="nav-anchor" to="/profile">
-                            내 정보
+                        <Link className="nav-anchor" to="/setting">
+                            밸런스게임 작성
                         </Link>
                     </li>
 
-                    <li>
-                        <Link className="nav-anchor" to="/setting">
-                            글 작성
-                        </Link>
-                    </li>
                     {auth.isAuthenticated ? (
-                        <li>
-                            <a className="nav-anchor" onClick={logout} href="/">
-                                로그아웃
-                            </a>
-                        </li>
+                        <>
+                            <li>
+                                <Link className="nav-anchor" to="/profile">
+                                    내 정보
+                                </Link>
+                            </li>
+                            <li>
+                                <a className="nav-anchor" onClick={logout} href="/">
+                                    로그아웃
+                                </a>
+                            </li>
+                        </>
                     ) : (
                         <li>
                             <a className="nav-anchor" href="/login">
@@ -124,25 +126,28 @@ const Nav = () => {
                 <ul className="nav-ul">
                     <li className="nav-li px-2">
                         <Link className="nav-anchor" to="/board">
-                            모든 글
+                            밸런스게임
                         </Link>
                     </li>
                     <li className="nav-li px-2">
                         <Link className="nav-anchor" to="/setting">
-                            글 작성
+                            밸런스게임 작성
                         </Link>
                     </li>
-                    <li className="nav-li px-2">
-                        <Link className="nav-anchor" to="/profile">
-                            내 정보
-                        </Link>
-                    </li>
+
                     {auth.isAuthenticated ? (
-                        <li className="nav-li px-2">
-                            <a className="nav-anchor" onClick={logout} href="/">
-                                로그아웃
-                            </a>
-                        </li>
+                        <>
+                            <li className="nav-li px-2">
+                                <Link className="nav-anchor" to="/profile">
+                                    내 정보
+                                </Link>
+                            </li>
+                            <li className="nav-li px-2">
+                                <a className="nav-anchor" onClick={logout} href="/">
+                                    로그아웃
+                                </a>
+                            </li>
+                        </>
                     ) : (
                         <li className="nav-li px-2">
                             <a className="nav-anchor" href="/login">

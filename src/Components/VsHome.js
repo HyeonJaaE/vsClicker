@@ -5,7 +5,7 @@ import { fn_dateTimeToFormatted } from "./Function";
 import CommentDiv from "./CommentDiv";
 import firebase from "../firebase";
 
-const Vs = (props) => {
+const VsHome = (props) => {
     var parameter = props.docref;
     if (!props.homeMode) {
         parameter = props.match.params.n;
@@ -168,10 +168,9 @@ const Vs = (props) => {
     };
 
     return (
-        <div className="d-flex flex-column h-100" style={{ backgroundColor: "rgb(242, 244, 247)" }}>
-            {!props.homeMode && <Nav />}
+        <div className="d-flex flex-column h-100">
             <div
-                className="d-flex flex-column col-xl-6 col-lg-8 col-md-9 col-sm-10 align-self-center shadow my-4 p-0"
+                className="d-flex flex-column col-xl-7 col-lg-8 col-md-9 col-sm-10 align-self-center shadow my-4 p-0"
                 style={{ backgroundColor: "white" }}
             >
                 {contents ? (
@@ -338,71 +337,92 @@ const Vs = (props) => {
                         </div>
                     )
                 ) : (
-                    <div style={{ minHeight: "300px", width: "100%" }}>
-                        <div className="mx-auto" style={{ height: "30px", width: "30px" }}>
-                            <div className="spinner-border text-secondary m-auto" role="status">
-                                <span className="sr-only">Loading...</span>
+                    <div
+                        className="d-flex align-items-center justify-content-center"
+                        style={{ height: "100%" }}
+                    >
+                        <div>
+                            <div className="mx-auto" style={{ height: "30px", width: "30px" }}>
+                                <div className="spinner-border text-secondary m-auto" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 )}
 
-                <blockquote
-                    className="blockquote p-3 m-0"
-                    style={{
-                        borderBottomColor: "rgb(223,223,223)",
-                        borderBottomStyle: "solid",
-                        borderBottomWidth: "1px",
-                    }}
-                >
-                    <p className="mb-0" style={{ minHeight: "25px" }}>
-                        {contents && contents.title}
-                    </p>
-                    <footer className="blockquote-footer">
-                        by&nbsp;
-                        {contents && contents.author.name}&nbsp;&nbsp;
-                        <cite title="Source Title">
-                            {contents && fn_dateTimeToFormatted(contents.date.toDate())}
-                        </cite>
-                    </footer>
-                </blockquote>
+                {contents && (
+                    <>
+                        <blockquote
+                            className="blockquote p-3 m-0"
+                            style={{
+                                borderBottomColor: "rgb(223,223,223)",
+                                borderBottomStyle: "solid",
+                                borderBottomWidth: "1px",
+                            }}
+                        >
+                            <p className="mb-0" style={{ minHeight: "25px" }}>
+                                {contents.title}
+                            </p>
+                            <footer className="blockquote-footer">
+                                by&nbsp;
+                                {contents.author.name}&nbsp;&nbsp;
+                                <cite title="Source Title">
+                                    {fn_dateTimeToFormatted(contents.date.toDate())}
+                                </cite>
+                            </footer>
+                        </blockquote>
 
-                <div
-                    className="d-flex px-3 py-2 align-items-center"
-                    style={{
-                        borderBottomColor: "rgb(223,223,223)",
-                        borderBottomStyle: "solid",
-                        borderBottomWidth: "1px",
-                    }}
-                >
-                    <div className="mr-2">
-                        <p className="mb-0">댓글</p>
-                    </div>
-                    <div className="flex-fill"></div>
-                    {order == "upCount" ? (
-                        <div className="">
-                            <button style={btnStyleActive} value="upCount" onClick={onChangeOrder}>
-                                추천순
-                            </button>
-                            <button style={btnStyleInactive} value="cDate" onClick={onChangeOrder}>
-                                최신순
-                            </button>
+                        <div
+                            className="d-flex px-3 py-2 align-items-center"
+                            style={{
+                                borderBottomColor: "rgb(223,223,223)",
+                                borderBottomStyle: "solid",
+                                borderBottomWidth: "1px",
+                            }}
+                        >
+                            <div className="mr-2">
+                                <p className="mb-0">댓글</p>
+                            </div>
+                            <div className="flex-fill"></div>
+                            {order == "upCount" ? (
+                                <div className="">
+                                    <button
+                                        style={btnStyleActive}
+                                        value="upCount"
+                                        onClick={onChangeOrder}
+                                    >
+                                        추천순
+                                    </button>
+                                    <button
+                                        style={btnStyleInactive}
+                                        value="cDate"
+                                        onClick={onChangeOrder}
+                                    >
+                                        최신순
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="btn-group btn-group-sm">
+                                    <button
+                                        style={btnStyleInactive}
+                                        value="upCount"
+                                        onClick={onChangeOrder}
+                                    >
+                                        추천순
+                                    </button>
+                                    <button
+                                        style={btnStyleActive}
+                                        value="cDate"
+                                        onClick={onChangeOrder}
+                                    >
+                                        최신순
+                                    </button>
+                                </div>
+                            )}
                         </div>
-                    ) : (
-                        <div className="btn-group btn-group-sm">
-                            <button
-                                style={btnStyleInactive}
-                                value="upCount"
-                                onClick={onChangeOrder}
-                            >
-                                추천순
-                            </button>
-                            <button style={btnStyleActive} value="cDate" onClick={onChangeOrder}>
-                                최신순
-                            </button>
-                        </div>
-                    )}
-                </div>
+                    </>
+                )}
 
                 {comments && (
                     <>
@@ -410,54 +430,56 @@ const Vs = (props) => {
                     </>
                 )}
 
-                <div className="col-12 my-3">
-                    <form onSubmit={onSubmit}>
-                        {auth.isAuthenticated ? (
-                            <div className="d-flex">
-                                <div className="w-100">
-                                    <input
-                                        ref={cta}
-                                        className="w-100 form-control my-input"
-                                        type="text"
-                                        id="commentToAdd"
-                                        placeholder="댓글 달기"
-                                        onChange={(e) => setCommentToAdd(e.target.value)}
-                                    />
+                {contents && (
+                    <div className="col-12 my-3">
+                        <form onSubmit={onSubmit}>
+                            {auth.isAuthenticated ? (
+                                <div className="d-flex">
+                                    <div className="w-100">
+                                        <input
+                                            ref={cta}
+                                            className="w-100 form-control my-input"
+                                            type="text"
+                                            id="commentToAdd"
+                                            placeholder="댓글 달기"
+                                            onChange={(e) => setCommentToAdd(e.target.value)}
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            className="form-control my-input"
+                                            type="submit"
+                                            value="댓글 등록"
+                                        />
+                                    </div>
                                 </div>
-                                <div>
-                                    <input
-                                        className="form-control my-input"
-                                        type="submit"
-                                        value="댓글 등록"
-                                    />
+                            ) : (
+                                <div className="d-flex">
+                                    <div className="w-100">
+                                        <input
+                                            className="w-100 form-control my-input"
+                                            type="button"
+                                            id="commentToAdd"
+                                            value="로그인 후 댓글 작성 가능"
+                                            style={{ cursor: "pointer", width: "500px" }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            className="form-control my-input"
+                                            type="submit"
+                                            value="댓글 등록"
+                                            disabled
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="d-flex">
-                                <div className="w-100">
-                                    <input
-                                        className="w-100 form-control my-input"
-                                        type="button"
-                                        id="commentToAdd"
-                                        value="로그인 후 댓글 작성 가능"
-                                        style={{ cursor: "pointer", width: "500px" }}
-                                    />
-                                </div>
-                                <div>
-                                    <input
-                                        className="form-control my-input"
-                                        type="submit"
-                                        value="댓글 등록"
-                                        disabled
-                                    />
-                                </div>
-                            </div>
-                        )}
-                    </form>
-                </div>
+                            )}
+                        </form>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
-export default Vs;
+export default VsHome;

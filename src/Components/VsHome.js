@@ -12,6 +12,7 @@ const VsHome = (props) => {
     }
     const auth = useSelector((state) => state.auth);
     const cta = useRef();
+
     //가져올 글 정보, 댓글 정보, 투표 여부, 댓글 정렬
     const [contents, setContents] = useState(null);
     const [comments, setComments] = useState(null);
@@ -187,7 +188,7 @@ const VsHome = (props) => {
                                     style={{
                                         height: "100%",
                                         width: "100%",
-                                        opacity: 0.85,
+                                        opacity: 0.8,
                                     }}
                                     alt={contents.voteA}
                                 />
@@ -238,7 +239,7 @@ const VsHome = (props) => {
                                     style={{
                                         height: "100%",
                                         width: "100%",
-                                        opacity: 0.85,
+                                        opacity: 0.8,
                                     }}
                                     alt={contents.voteB}
                                 />

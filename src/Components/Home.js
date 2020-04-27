@@ -12,7 +12,11 @@ const Home = () => {
     const [contentsCount, setContentsCount] = useState(0);
     const db = firebase.firestore();
     const infoDoc = db.collection("info").doc("infoDoc");
-    const contentsDoc = db.collection("contents").orderBy("view", "desc").limit(10);
+    const contentsDoc = db
+        .collection("contents")
+        .where("view", ">=", 100)
+        .orderBy("view", "desc")
+        .limit(10);
 
     useEffect(() => {
         contentsDoc
@@ -34,7 +38,7 @@ const Home = () => {
             });
 
         infoDoc.get().then((snapShot) => {
-            console.log(snapShot.data().totalVote);
+            //console.log(snapShot.data().totalVote);
             setTotalVote(snapShot.data().totalVote);
             setTotalUser(snapShot.data().totalUser);
         });
@@ -71,9 +75,9 @@ const Home = () => {
         <div className="home">
             <Nav />
             <div className="slide-container">
-                <a href="#" class="arrow left" onClick={() => handleIdx("left")}></a>
+                <a href="#" className="arrow left" onClick={() => handleIdx("left")}></a>
                 {contents[idx]}
-                <a href="#" class="arrow right" onClick={() => handleIdx("right")}></a>
+                <a href="#" className="arrow right" onClick={() => handleIdx("right")}></a>
             </div>
 
             <div
@@ -81,25 +85,19 @@ const Home = () => {
                 style={{ height: "250px" }}
             >
                 <div className="mx-4 my-auto">
-                    <p className="text-center">
-                        <h6>투표수</h6>
-                        <br />
-                        <h2>{totalVote}</h2>
-                    </p>
+                    <h6>투표수</h6>
+                    <br />
+                    <h2>{totalVote}</h2>
                 </div>
                 <div className="mx-4 my-auto">
-                    <p className="text-center">
-                        <h6>게시물</h6>
-                        <br />
-                        <h2>{contentsCount}</h2>
-                    </p>
+                    <h6>게시물</h6>
+                    <br />
+                    <h2>{contentsCount}</h2>
                 </div>
                 <div className="mx-4 my-auto">
-                    <p className="text-center">
-                        <h6>이용자</h6>
-                        <br />
-                        <h2>{totalUser}</h2>
-                    </p>
+                    <h6>이용자</h6>
+                    <br />
+                    <h2>{totalUser}</h2>
                 </div>
             </div>
 

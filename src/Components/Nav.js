@@ -106,11 +106,18 @@ const Nav = () => {
                             </li>
                         </>
                     ) : (
-                        <li>
-                            <a className="nav-anchor" href="/login">
-                                로그인
-                            </a>
-                        </li>
+                        <>
+                            <li>
+                                <Link className="nav-anchor" to="/signup">
+                                    회원 가입
+                                </Link>
+                            </li>
+                            <li>
+                                <a className="nav-anchor" href="/login">
+                                    로그인
+                                </a>
+                            </li>
+                        </>
                     )}
                 </ul>
             </div>
@@ -149,11 +156,18 @@ const Nav = () => {
                             </li>
                         </>
                     ) : (
-                        <li className="nav-li px-2">
-                            <a className="nav-anchor" href="/login">
-                                로그인
-                            </a>
-                        </li>
+                        <>
+                            <li className="nav-li px-2">
+                                <Link className="nav-anchor" to="/signup">
+                                    회원가입
+                                </Link>
+                            </li>
+                            <li className="nav-li px-2">
+                                <a className="nav-anchor" href="/login">
+                                    로그인
+                                </a>
+                            </li>
+                        </>
                     )}
                 </ul>
             </nav>

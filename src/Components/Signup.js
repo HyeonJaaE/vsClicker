@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "../firebase";
@@ -7,22 +7,18 @@ import { setCurrentUser } from "../actions/authActions";
 
 const Signup = (props) => {
     const [data, setData] = useState({ name: "", email: "", password: "", errors: {} });
-
+    const auth = useSelector((state) => state.auth);
     const { errors } = data;
+
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            window.alert("이미 로그인 하셨습니다.");
+            props.history.push("/");
+        }
+    });
 
     const updateField = (e) => {
         setData({ ...data, [e.target.id]: e.target.value });
-    };
-
-    const dispatch = useDispatch();
-    const counter = useSelector((state) => state);
-
-    const test = () => {
-        if (firebase.auth().currentUser) {
-            console.log(firebase.auth().currentUser.displayName);
-            dispatch(setCurrentUser(firebase.auth().currentUser.displayName));
-        }
-        console.log(counter);
     };
 
     const submit = (e) => {
@@ -80,7 +76,6 @@ const Signup = (props) => {
             <Nav />
             <div className="container-fluid mt-4" style={{ minHeight: "100vh" }}>
                 <div className="col-xs-12 col-sm-8 col-md-6 col-lg-4 mx-auto ">
-                    <button onClick={test}>do not press</button>
                     <div className="text-center">
                         <h4>신규 계정 생성</h4>
                     </div>

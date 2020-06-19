@@ -16,7 +16,7 @@ const Home = () => {
         .collection("contents")
         .where("view", ">=", 100)
         .orderBy("view", "desc")
-        .limit(10);
+        .limit(100);
 
     useEffect(() => {
         contentsDoc
